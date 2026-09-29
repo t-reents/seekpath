@@ -13,9 +13,6 @@ Licence: MIT License, see LICENSE.txt
   the Materials Project (https://materialsproject.org).
 """
 
-# ``SymmetryDetectionError`` is re-exported here so that
-# ``seekpath.hpkot.SymmetryDetectionError`` and ``seekpath.SymmetryDetectionError``
-# keep working; it is defined alongside the backends that raise it.
 from .backends import (  # noqa: F401
     DEFAULT_BACKEND,
     SUPPORTED_BACKENDS,
@@ -87,8 +84,8 @@ def get_path(
 
     :param backend: the symmetry backend used to standardize the structure,
         either ``'spglib'`` (the default) or ``'moyopy'``. The ``'moyopy'``
-        backend requires the optional ``moyopy >= 0.21`` dependency and is
-        usually faster; see the documentation for where the results of the
+        backend requires the optional ``moyopy`` dependency and is usually
+        faster; see the documentation for where the results of the
         two backends can differ.
 
 

@@ -31,7 +31,6 @@ except ImportError:
 
 needs_moyopy = pytest.mark.skipif(not HAS_MOYOPY, reason='moyopy is not installed')
 
-# Every (extended Bravais symbol, POSCAR) pair shipped as reference data
 REFERENCE_STRUCTURES = sorted(
     (os.path.basename(folder), os.path.basename(poscar).replace('POSCAR_', ''))
     for folder in glob.glob(os.path.join(BAND_PATH_DATA, '*'))

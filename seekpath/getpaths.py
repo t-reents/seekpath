@@ -134,8 +134,8 @@ def get_path(
 
     :param backend: the symmetry backend used to standardize the structure,
         either ``'spglib'`` (the default) or ``'moyopy'``. The ``'moyopy'``
-        backend requires the optional ``moyopy >= 0.21`` dependency and is
-        usually faster; see the documentation for where the results of the
+        backend requires the optional ``moyopy`` dependency and is usually
+        faster; see the documentation for where the results of the
         two backends can differ.
 
 
@@ -275,8 +275,8 @@ def get_explicit_k_path(
 
     :param backend: the symmetry backend used to standardize the structure,
         either ``'spglib'`` (the default) or ``'moyopy'``. The ``'moyopy'``
-        backend requires the optional ``moyopy >= 0.21`` dependency and is
-        usually faster; see the documentation for where the results of the
+        backend requires the optional ``moyopy`` dependency and is usually
+        faster; see the documentation for where the results of the
         two backends can differ.
 
     .. versionchanged:: 1.8
@@ -415,8 +415,8 @@ def get_path_orig_cell(
 
     :param backend: the symmetry backend used to standardize the structure,
         either ``'spglib'`` (the default) or ``'moyopy'``. The ``'moyopy'``
-        backend requires the optional ``moyopy >= 0.21`` dependency and is
-        usually faster; see the documentation for where the results of the
+        backend requires the optional ``moyopy`` dependency and is usually
+        faster; see the documentation for where the results of the
         two backends can differ.
 
 
@@ -573,8 +573,8 @@ def get_explicit_k_path_orig_cell(
 
     :param backend: the symmetry backend used to standardize the structure,
         either ``'spglib'`` (the default) or ``'moyopy'``. The ``'moyopy'``
-        backend requires the optional ``moyopy >= 0.21`` dependency and is
-        usually faster; see the documentation for where the results of the
+        backend requires the optional ``moyopy`` dependency and is usually
+        faster; see the documentation for where the results of the
         two backends can differ.
 
     .. versionchanged:: 1.8

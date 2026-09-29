@@ -75,13 +75,6 @@ Rust reimplementation of spglib::
 
     pip install seekpath[moyopy]
 
-``moyopy >= 0.21`` is required. Earlier versions choose conventional cells
-that do not follow the conventions the HPKOT recipe expects (before 0.17), are
-pathologically slow on perfect supercells (before 0.18), return standardized
-cells that keep the distortion of a slightly distorted input instead of
-symmetrizing it as ``spglib`` does (before 0.20), or report the mirror-image
-space group of a chiral crystal given in a left-handed basis (before 0.21).
-
 What agrees
 ~~~~~~~~~~~
 
