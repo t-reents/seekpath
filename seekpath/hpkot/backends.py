@@ -172,7 +172,7 @@ def _check_moyopy_version():
         raise ValueError(
             f'moyopy >= {MOYOPY_MIN_VERSION} is required for the '
             "'moyopy' backend, but it could not be imported. Install it "
-            'with `pip install seekpath[moyopy]`'
+            'with `pip install seekpath[moyopy]` (requires Python >= 3.10)'
         ) from exc
 
     if Version(version('moyopy')) < Version(MOYOPY_MIN_VERSION):

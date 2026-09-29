@@ -44,7 +44,7 @@ bz = [
     "scipy>=1",
 ]
 moyopy = [
-    "moyopy>=0.21",
+    "moyopy>=0.21; python_version >= '3.10'",
 ]
 dev = [
     "black==23.3.0",

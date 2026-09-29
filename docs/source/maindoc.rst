@@ -71,7 +71,8 @@ Rust reimplementation of spglib::
 
     seekpath.get_path(structure, backend='moyopy')
 
-``moyopy`` is an optional dependency, installed with::
+``moyopy`` is an optional dependency that requires Python >= 3.10, installed
+with::
 
     pip install seekpath[moyopy]
 
