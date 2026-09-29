@@ -15,7 +15,6 @@ import seekpath
 from seekpath import hpkot
 from seekpath.hpkot.backends import (
     DEFAULT_BACKEND,
-    SUPPORTED_BACKENDS,
     SymmetryDetectionError,
     get_symmetry_dataset,
 )
@@ -64,7 +63,9 @@ class TestBackendSelection:
         with pytest.raises(ValueError, match="Unknown symmetry backend 'nope'"):
             hpkot.get_path(structure, backend='nope')
 
-    @pytest.mark.parametrize('backend', SUPPORTED_BACKENDS)
+    @pytest.mark.parametrize(
+        'backend', ['spglib', pytest.param('moyopy', marks=needs_moyopy)]
+    )
     def test_symmetry_detection_error(self, backend):
         """Both backends report a failed detection the same way.
 
@@ -72,8 +73,6 @@ class TestBackendSelection:
         be analysed, and must raise ``SymmetryDetectionError`` whichever backend
         is used, rather than the backend's own exception type.
         """
-        if backend == 'moyopy' and not HAS_MOYOPY:
-            pytest.skip('moyopy is not installed')
         degenerate = (
             [[4.0, 0.0, 0.0], [4.0, 0.0, 0.0], [0.0, 0.0, 4.0]],
             [[0.0, 0.0, 0.0]],
@@ -193,7 +192,7 @@ class TestBackendsAgree:
 
         assert (
             res_spglib['explicit_kpoints_labels']
-            == (res_moyopy['explicit_kpoints_labels'])
+            == res_moyopy['explicit_kpoints_labels']
         )
         np.testing.assert_allclose(
             res_spglib['explicit_kpoints_rel'],
@@ -226,12 +225,7 @@ class TestOrigCellPathsAreEquivalent:
         candidates += [-candidate for candidate in candidates]
 
         for candidate in candidates:
-            for matrix in (
-                candidate,
-                candidate.T,
-                np.linalg.inv(candidate),
-                np.linalg.inv(candidate).T,
-            ):
+            for matrix in (candidate, candidate.T):
                 difference = k_a @ matrix - k_b
                 # Two k-points differing by a reciprocal lattice vector are equal
                 difference -= np.round(difference)

@@ -16,17 +16,14 @@ Two backends are supported:
     An optional backend. moyopy is a Rust reimplementation of spglib and is
     usually faster. It is queried with ``Setting.spglib()``, which selects the
     same Hall-symbol representative that spglib uses.
-
-.. note:: Niggli reduction is always done with spglib, since moyopy does not
-    implement it.
 """
 
 from dataclasses import dataclass
+from functools import lru_cache
 
 import numpy as np
 
 DEFAULT_BACKEND = 'spglib'
-SUPPORTED_BACKENDS = ('spglib', 'moyopy')
 MOYOPY_MIN_VERSION = '0.21'
 
 
@@ -80,13 +77,13 @@ def get_symmetry_dataset(
     :raise SymmetryDetectionError: if the backend could not detect the
         symmetry of the structure.
     """
-    if backend == 'spglib':
-        return _get_spglib_dataset(structure, symprec, angle_tolerance)
-    if backend == 'moyopy':
-        return _get_moyopy_dataset(structure, symprec, angle_tolerance)
-    raise ValueError(
-        f"Unknown symmetry backend '{backend}', should be one of {SUPPORTED_BACKENDS}"
-    )
+    try:
+        get_dataset = _BACKENDS[backend]
+    except KeyError:
+        raise ValueError(
+            f"Unknown symmetry backend '{backend}', should be one of {SUPPORTED_BACKENDS}"
+        ) from None
+    return get_dataset(structure, symprec, angle_tolerance)
 
 
 def _get_spglib_dataset(structure, symprec, angle_tolerance):
@@ -107,7 +104,7 @@ def _get_spglib_dataset(structure, symprec, angle_tolerance):
 
     return SymmetryDataset(
         number=dataset.number,
-        international=dataset.international.replace(' ', ''),
+        international=dataset.international,
         std_lattice=np.array(dataset.std_lattice),
         std_positions=np.array(dataset.std_positions),
         std_types=np.array(dataset.std_types),
@@ -156,6 +153,7 @@ def _get_moyopy_dataset(structure, symprec, angle_tolerance):
     )
 
 
+@lru_cache(maxsize=None)
 def _check_moyopy_version():
     """Import moyopy, checking it is recent enough.
 
@@ -183,8 +181,5 @@ def _check_moyopy_version():
     return moyopy
 
 
-def niggli_reduce(lattice):
-    """Return the Niggli-reduced form of ``lattice`` (vectors as rows)."""
-    from .tools import check_spglib_version
-
-    return check_spglib_version().niggli_reduce(lattice)
+_BACKENDS = {'spglib': _get_spglib_dataset, 'moyopy': _get_moyopy_dataset}
+SUPPORTED_BACKENDS = tuple(_BACKENDS)

@@ -15,7 +15,6 @@ Licence: MIT License, see LICENSE.txt
 
 from .backends import (  # noqa: F401
     DEFAULT_BACKEND,
-    SUPPORTED_BACKENDS,
     SymmetryDetectionError,
 )
 
@@ -142,6 +141,7 @@ def get_path(
     import warnings
 
     import numpy as np
+    import spglib
 
     from .tools import (
         extend_kparam,
@@ -152,7 +152,7 @@ def get_path(
         get_reciprocal_cell_rows,
         get_real_cell_from_reciprocal_rows,
     )
-    from .backends import get_symmetry_dataset, niggli_reduce
+    from .backends import get_symmetry_dataset
     from .spg_mapping import get_spgroup_data, get_primitive
 
     structure_internal = (
@@ -313,7 +313,7 @@ def get_path(
         # I use the default eps here, this could be changed
         reciprocal_cell_orig = get_reciprocal_cell_rows(conv_lattice)
         ## This is Niggli-reduced
-        reciprocal_cell2 = niggli_reduce(reciprocal_cell_orig)
+        reciprocal_cell2 = spglib.niggli_reduce(reciprocal_cell_orig)
         real_cell2 = get_real_cell_from_reciprocal_rows(reciprocal_cell2)
         # TODO: get transformation matrix?
 
